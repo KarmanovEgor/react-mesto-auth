@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import ComponentLogReg from '../ComponentLogReg/ComponentLogReg
 import Input from '../Input/Input'
+import SectionLogReg from '../SectionLogReg/SectionLogReg';
 
 export default function Login({ name, handleLogin }) {
     const { values, errors, isInputValid, isValid, handleChange, reset } =
@@ -12,7 +12,7 @@ export default function Login({ name, handleLogin }) {
         handleLogin(values.password, values.email)
     }
 return (
-<ComponentLogReg name ={name} onSubmit={onLogin} isValid={isValid}>
+<SectionLogReg name ={name} onSubmit={onLogin} isValid={isValid}>
     <Input 
     name = 'email'
     type = 'email'
@@ -31,7 +31,7 @@ return (
 
 
 
-</ComponentLogReg> 
+</SectionLogReg> 
 )
 }
 

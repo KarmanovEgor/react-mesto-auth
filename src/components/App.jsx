@@ -3,7 +3,8 @@ import Main from "./Main/Main";
 import Footer from "./Footer/Footer";
 import PopupWithForm from "./PopapWithForm/PopupWithForm";
 import ImagePopup from "./ImagePopup/ImagePopup";
-import { useCallback, useState, useEffect, useHistory } from "react";
+import { useCallback, useState, useEffect} from "react";
+
 import currentUserContext from "../contexts/CurrentUserContext";
 import api from "../utils/api";
 import EditProfilePopup from "./EditProfilePopup/EditProfilePopup";
@@ -17,13 +18,17 @@ import * as auth from "../utils/auth.js";
 import crest from "../images/crest.svg";
 import galka from "../images/galka.svg";
 import { Navigate, Route, Routes } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+
 
 function App() {
+  const navigate = useNavigate();
   // Popup
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  const [isImagePopupOpen, setIsImagePopup] = useState(false);
+  const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [isDelPopupOpen, setDelPopupOpen] = useState(false);
   // Context
@@ -37,11 +42,11 @@ function App() {
     isAddPlacePopupOpen ||
     isEditAvatarPopupOpen ||
     isImagePopupOpen ||
-    isDelPopupOpen;
-
+    isDelPopupOpen ||
+    isInfoTooltipPopupOpen;
   const [loggedIn, setLoggedIn] = useState(false);
   const [userData, setUserData] = useState({});
-  const history = useHistory();
+ 
   const [email, setEmail] = useState("");
   const [infoTooltip, setInfoTooltip] = useState({
     message: "",
@@ -53,40 +58,37 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
-    setIsImagePopup(false);
+    setIsImagePopupOpen(false);
     setDelPopupOpen(false);
+    setIsInfoTooltipPopupOpen(false);
   }, [
     setIsEditProfilePopupOpen,
     setIsAddPlacePopupOpen,
     setIsEditAvatarPopupOpen,
-    setIsImagePopup,
+    setIsImagePopupOpen,
     setDelPopupOpen,
+    setIsInfoTooltipPopupOpen,
   ]);
 
-  const authJwt = (jwt) => {
-    return auth.getContent(jwt).then((res) => {
-      if (res) {
-        setLoggedIn(true);
-        setUserData({
-          email: res.email,
-          password: res.password,
-        });
-      }
-    });
-  };
-
   useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    if (jwt) {
-      authJwt(jwt);
+    const token = localStorage.getItem("token");
+    if (token) {
+      auth
+        .getContent(token)
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            setEmail(res.email);
+            navigate.push("/");
+          } else {
+            navigate.push("/sign-in");
+          }
+        })
+        .catch(() => {
+          navigate.push("/sign-in");
+        });
     }
   }, []);
-  useEffect(() => {
-    if (loggedIn) setEmail(loggedIn.data.email);
-    {
-      history.push("/");
-    }
-  });
 
   useEffect(() => {
     if (!isOpen) return;
@@ -116,7 +118,7 @@ function App() {
 
   function handleCardClick(card) {
     setSelectedCard(card);
-    setIsImagePopup(true);
+    setIsImagePopupOpen(true);
   }
 
   function handleDelPopupClick(cardid) {
@@ -207,7 +209,7 @@ function App() {
       if (res.jwt) {
         setLoggedIn(true);
         localStorage.setItem("jwt", res.jwt);
-        navigate('/')
+        navigate("/");
       }
     });
   };
@@ -217,19 +219,19 @@ function App() {
     localStorage.removeItem("token");
     setEmail("");
     setLoggedIn(false);
-    history.push("/sign-in");
+    navigate.push("/sign-in");
   }
   function handleRegister(data) {
     return auth
       .register(data)
       .then((response) => {
-        if (response.data) { 
+        if (response.data) {
           setInfoTooltip({
             message: "Вы успешно зарегистрировались!",
             icon: `${galka}`,
-            isOpen: true,  
+            isOpen: true,
           });
-          navigate('/sign-in')
+          navigate("/sign-in");
         }
       })
       .catch((error) => {
@@ -244,14 +246,15 @@ function App() {
   }
 
   return (
-    <currentUserContext.Provider value={currentUser}>
+    <currentUserContext.Provider value={{ currentUser, email, loggedIn }}>
       <div className="page__content">
-        <SendContex.Provider>
+  
           <Routes>
             <Route
               path="/"
               element={
                 <ProtectedRoute
+                  component={Main}
                   oneEditProfile={handleEditProfileClick}
                   onEditAvatar={handleEditAvatarClick}
                   onAddPlace={handleAddPlaceClick}
@@ -324,12 +327,21 @@ function App() {
             onClose={closeAllPopups}
             onSubmit={handleSubmit}
           />
-          <ImagePopup
-            card={selectedCard}
-            isOpen={isImagePopupOpen}
-            onClose={closeAllPopups}
-          />
-        </SendContex.Provider>
+  
+        <ImagePopup
+          card={selectedCard}
+          isOpen={isImagePopupOpen}
+          onClose={closeAllPopups}
+        />
+        <InfoTooltip
+          name="result"
+          infoTooltip={infoTooltip}
+          isOpen={isInfoTooltipPopupOpen}
+          onClose={closeAllPopups}
+          message={infoTooltip.message}
+          icon={infoTooltip.icon}
+
+        />
       </div>
     </currentUserContext.Provider>
   );
