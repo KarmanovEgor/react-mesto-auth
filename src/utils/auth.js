@@ -1,41 +1,40 @@
-export const BASE_URL = 'https://auth.nomoreparties.co';
+export const BaseURL = "https://auth.nomoreparties.co";
 
-const handleResponse = (response) => response.ok ?
-  response.json() :
-  Promise.reject(`Ошибка ${response.status}`)
+const handleResponse = (response) =>
+  response.ok ? response.json() : Promise.reject(`Ошибка ${response.status}`);
 
-export const register = (data) => {
-  return fetch(`${BASE_URL}/signup`, {
-    method: 'POST',
+export function register (password, email) {
+  return fetch(`${BaseURL}/signup`, {
+    method: "POST",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      password: data.password,
-      email: data.email
-    })
-  }).then(handleResponse);
-}
+      password: password,
+      email: email,
+    }),
+  }).then(response => handleResponse(response));
+};
 
-export const authorize = (data) => {
-  return fetch(`${BASE_URL}/signin`, {
-    method: 'POST',
+export function authorize (password, email) {
+  return fetch(`${BaseURL}/signin`, {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      password: data.password,
-      email: data.email 
-    })
-  }).then(handleResponse);
-}
-export const getContent = (token) => {
-  return fetch(`${BASE_URL}/users/me`, {
-    method: 'GET',
+      password: password,
+      email: email,
+    }),
+  })
+  .then(response => handleResponse(response));
+};
+export function getContent (token) {
+  return fetch(`${BaseURL}/users/me`, { 
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
-    }
-  }).then(handleResponse);
-}
+      "Content-Type": "application/json",
+      'Authorization': `Bearer ${token}`,
+    },
+  }).then(response => handleResponse(response));
+};

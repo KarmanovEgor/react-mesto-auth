@@ -12,7 +12,9 @@ export default function Main({
   onDelete,
   cards,
   onCardLike,
-  name
+  name,
+  handleLogin,
+  handleRegister
 }) {
   const currentUser = useContext(currentUserContext);
 

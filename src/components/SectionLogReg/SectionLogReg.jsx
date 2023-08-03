@@ -1,9 +1,11 @@
 import Form from "../Form/Form";
-import "../../blocks/login/login.css";
+// import "../../blocks/login/login.css";
 import { Link } from "react-router-dom";
 
 export default function SectionLogReg({ name, children, isValid, onSubmit }) {
+ 
   return (
+    
     <section className="login">
       <h2 className="login__header">
         {name === "signup" ? "Регистрация" : "Вход"}
@@ -15,14 +17,15 @@ export default function SectionLogReg({ name, children, isValid, onSubmit }) {
         isValid={isValid}
         onSubmit={onSubmit}
       />
-      {name === "signup" && (
+      {name === "signup" && 
         <p className="login__help">
-          Уже зарегистрированы?{" "}
-          <Link className="login__help-link" to="/sign-in">
+          Уже зарегистрированы?
+          <Link to={"/signin"} className="login__help-link" >
             Войти
           </Link>
         </p>
-      )}
+      }
     </section>
+  
   );
 }

@@ -1,10 +1,13 @@
 import Popup from "../Popup/Popup";
 
-export default function InfoTooltip({ name, isOpen, onClose, ...props }) {
+export default function InfoTooltip({ name, isSuccessful, isOpen, onClose}) {
+ 
   return (
+
     <Popup name={name} isOpen={isOpen} onClose={onClose}>
-      <img className="popup__info-icon" src={props.icon} alt={props.message} />
-      <p className="popup__info-text">{props.message}</p>
+      <div className={`popup__info-icon ${!isSuccessful ? 'popup__info-icon-fals' : ''}`}></div>
+      <p className="popup__info-text">{isSuccessful ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз'}</p>
+     
     </Popup>
   );
 }

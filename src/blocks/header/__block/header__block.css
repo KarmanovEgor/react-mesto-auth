@@ -1,0 +1,13 @@
+.header__block {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: right;
+    color: #FFFFFF;
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-self: flex-start;
+}

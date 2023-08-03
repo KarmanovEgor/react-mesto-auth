@@ -4,7 +4,9 @@ import currentUserContext from "../../contexts/CurrentUserContext";
 export default function Card({ card, onClickCard, onDelete, onCardLike }) {
   const currentUser = useContext(currentUserContext);
   const isLiked = card.likes.some((i) => i._id === currentUser._id);
-
+  // console.log(card.likes)
+  // console.log(currentUser._id)
+  // console.log(card)
   return (
     <div className="element__card">
       {currentUser._id === card.owner._id && (
@@ -34,7 +36,7 @@ export default function Card({ card, onClickCard, onDelete, onCardLike }) {
             onClick={() => onCardLike(card)}
             likes={card.likes}
             myid={currentUser._id}
-          />
+          ></button>
           <span className="element__like-counter">{card.likes.length}</span>
         </div>
       </div>

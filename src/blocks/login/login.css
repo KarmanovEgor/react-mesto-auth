@@ -3,6 +3,8 @@
     max-width: 358px;
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
+    padding-top: 60px;
 }
 @media (max-width: 768px) {
     .login {

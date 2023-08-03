@@ -56,7 +56,7 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
           required
           value={values.profilename}
           onChange={handleChange}
-          isInputValid={isInputValid.profilename}
+         
         />
         <span className="popup__error popup__error_type_profilename">
           {errors.profilename}
@@ -76,7 +76,7 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
           required
           value={values.job}
           onChange={handleChange}
-          isInputValid={isInputValid.job}
+   
         />
         <span className="popup__error popup__error_type_job">{errors.job}</span>
       </fieldset>

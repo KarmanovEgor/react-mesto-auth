@@ -1,19 +1,18 @@
 
 import useFormValidation from "../../utils/useFormValidation";
 import PopupWithForm from "../PopapWithForm/PopupWithForm";
+import Input from "../Input/Input";
 
-export default function EditAvatarPopup({isOpen, onClose, onUpdateAvatar}) {
-  
+export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
   const { values, errors, isInputValid, isValid, handleChange, reset } =
     useFormValidation();
   function resetOfClose() {
     onClose();
     reset();
-  
   }
   function handleSubmit(e) {
     e.preventDefault();
-    onUpdateAvatar({ avatar: values.avatar  }, reset);
+    onUpdateAvatar({ avatar: values.avatar }, reset);
   }
   return (
     <PopupWithForm
@@ -26,23 +25,15 @@ export default function EditAvatarPopup({isOpen, onClose, onUpdateAvatar}) {
       onSubmit={handleSubmit}
     >
       <fieldset className="popup__elements">
-        <input
-          className={`popup__element ${
-            isInputValid.avatar === undefined || isInputValid.avatar
-              ? ""
-              : "popup__element_invalid"
-          }`}
-          type="url"
+        <Input
           name="avatar"
-          id="ava"
+          type="url"
           placeholder="Ссылка на картинку"
-          required
           value={values.avatar}
           onChange={handleChange}
+          error={errors.avatar}
+          isInputValid={isInputValid.avatar}
         />
-        <span className="popup__error popup__error_type_avatar">
-          {errors.avatar}
-        </span>
       </fieldset>
     </PopupWithForm>
   );

@@ -1,4 +1,4 @@
-import "../../blocks/popup/popup.css";
+
 
 export default function Popup({ name, children, isOpen, onClose }) {
   return (
@@ -7,7 +7,7 @@ export default function Popup({ name, children, isOpen, onClose }) {
       onClick={onClose}
     >
       <div
-        className={`${name==='img' ? 'popup__gallery' : 'popup__container'} ${name === 'result' ? 'popup__login' : ''}`}
+        className={`${name==='img' ? 'popup__gallery' : 'popup__container'} ${name === 'result' ? 'popup__container-registr' : ''}`}
         
         onClick={(event) => event.stopPropagation()}
       >

@@ -1,48 +1,40 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-// import ComponentLogReg from '../ComponentLogReg/ComponentLogReg'
+// import React, { useState } from 'react';
+// import { Link } from 'react-router-dom';
 
-
-
+import useFormValidation from "../../utils/useFormValidation";
+import Input from "../Input/Input";
+import SectionLogReg from "../SectionLogReg/SectionLogReg";
 export default function Register({ name, handleRegister }) {
-    const { values, errors, isInputValid, isValid, handleChange, reset } =
+  const { values, errors, isInputValid, isValid, handleChange } =
     useFormValidation();
 
-    function onRegister(e) {
-        e.preventDefault()
-        handleRegister(values.password, values.email)
-    }
-return (
-<ComponentLogReg name ={name} onSubmit={onRegister} isValid={isValid}>
-    <Input 
-    name = 'email'
-    type = 'email'
-    placeholder = {'Email'}
-    value = {values.email}
-    onChange={handleChange} />
-      <Input 
-    name = 'password'
-    type = 'password'
-    placeholder = {'пароль'}
-    value = {values.password}
-    onChange={handleChange}
-    isInputValid={isInputValid.password}
-    error={errors.password} />
-    
-
-
-
-</ComponentLogReg> 
-
-
-)
-
-
-
-
-
-
-
+  function onRegister(e) {
+    e.preventDefault();
+    handleRegister(values.password, values.email);
+  }
+  return (
+    <SectionLogReg name={name} onSubmit={onRegister} isValid={isValid}>
+      <Input
+        name="email"
+        type="email"
+        placeholder={"Email"}
+        value={values.email}
+        onChange={handleChange}
+        isInputValid={isInputValid.email}
+        error={errors.email}
+      />
+      <Input
+        name="password"
+        type="password"
+        placeholder={"пароль"}
+        value={values.password}
+        onChange={handleChange}
+        isInputValid={isInputValid.password}
+        error={errors.password}
+      />
+    </SectionLogReg>
+  );
+}
 
 //   return (
 //     <section className="login">
@@ -80,6 +72,5 @@ return (
 //       </form>
 //     </section>
 //   );
-}
 
 // export default Register;

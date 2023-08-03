@@ -1,38 +1,38 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Input from '../Input/Input'
-import SectionLogReg from '../SectionLogReg/SectionLogReg';
+
+import Input from "../Input/Input";
+import SectionLogReg from "../SectionLogReg/SectionLogReg";
+import useFormValidation from "../../utils/useFormValidation";
 
 export default function Login({ name, handleLogin }) {
-    const { values, errors, isInputValid, isValid, handleChange, reset } =
+  const { values, errors, isInputValid, isValid, handleChange } =
     useFormValidation();
 
-    function onLogin(e) {
-        e.preventDefault()
-        handleLogin(values.password, values.email)
-    }
-return (
-<SectionLogReg name ={name} onSubmit={onLogin} isValid={isValid}>
-    <Input 
-    name = 'email'
-    type = 'email'
-    placeholder = {'Email'}
-    value = {values.email}
-    onChange={handleChange} />
-      <Input 
-    name = 'password'
-    type = 'password'
-    placeholder = {'пароль'}
-    value = {values.password}
-    onChange={handleChange}
-    isInputValid={isInputValid.password}
-    error={errors.password} />
-    
-
-
-
-</SectionLogReg> 
-)
+  function onLogin(e) {
+    e.preventDefault();
+    handleLogin(values.password, values.email);
+  }
+  return (
+    <SectionLogReg name={name} onSubmit={onLogin} isValid={isValid}>
+      <Input
+        name="email"
+        type="email"
+        placeholder={"Email"}
+        value={values.email}
+        onChange={handleChange}
+        isInputValid={isInputValid.email}
+        error={errors.email}
+      />
+      <Input
+        name="password"
+        type="password"
+        placeholder={"пароль"}
+        value={values.password}
+        onChange={handleChange}
+        isInputValid={isInputValid.password}
+        error={errors.password}
+      />
+    </SectionLogReg>
+  );
 }
 
 //   return (
