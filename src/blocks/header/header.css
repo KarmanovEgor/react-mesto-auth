@@ -8,10 +8,6 @@
   align-items: center;
 }
 
-
-
-
-
 @media screen and (max-width: 1023px) {
 
   .header {
@@ -23,5 +19,19 @@
 @media screen and (max-width: 767px) {
   .header   {
     width: calc(320px + (720 - 320) * ((100vw - 320px)/(768 - 320)));
+  }
+}
+@media screen and (max-width: 640px) {
+
+
+
+  .header::after {
+     position: absolute;
+     content: "";
+     left: 0;
+     bottom: 84px;
+     background-color: rgba(84, 84, 84, 0.7);
+     height: 1px;
+     width: 100%;
   }
 }
