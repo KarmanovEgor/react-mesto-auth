@@ -129,7 +129,10 @@ function App() {
 
   // я бы сделал отдельным компонентом, это было бы правильнее?
   function handleCardLike(card) {
+   
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    
+   
    
 
     if (!isLiked) {
@@ -148,6 +151,7 @@ function App() {
   }
 
   useEffect(() => {
+    if (loggedIn) {
     Promise.all([api.getInfo(), api.getCards()])
 
       .then(([resInfo, resCards]) => {
@@ -155,7 +159,7 @@ function App() {
         setCards(resCards);
       })
       .catch((error) => console.error(`Ошибка ${error}`));
-  }, []);
+  }}, [loggedIn]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -221,8 +225,9 @@ function App() {
   function handleLogin (password, email) {
     authorize(password, email)
     .then((res) => {
+    
         setLoggedIn(true);
-        localStorage.setItem("jwt", res.jwt);
+        localStorage.setItem("token", res.token);
         navigate("/");
       })
       .catch((error) => {

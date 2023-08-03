@@ -2,10 +2,10 @@
 import logo from "../../images/logo.svg";
 import { Link } from "react-router-dom";
 
-export default function Header({name, data}) {
-  console.log(data)
+export default function Header({name, dataUser}) {
+  console.log(dataUser)
 function onLogout(){
-  localStorage.removeItem('jwt')
+  localStorage.removeItem('token')
 }
 
   return (
@@ -22,12 +22,12 @@ function onLogout(){
 <Link to={name === 'signup' ? '/signin' : '/signup'} className='header__login-link'>{name === "signup" ? "Вход" : "Регистрация" }</Link>
 :
 <>
-<div className={'header__block'}>
-  <p className = 'header__block-email'>{data}</p>
-
-  
-  <Link to="/signin" className='header__login-link' onClick={onLogout}>Выйти</Link>
-</div>
+<ul className='header__block'>
+  <li className='header__block-email'>{dataUser}</li>
+  <li>
+    <Link to="/signin" className='header__login-link' onClick={onLogout}>Выйти</Link>
+  </li>
+</ul>
 
 </>
 }

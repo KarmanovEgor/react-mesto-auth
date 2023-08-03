@@ -8,6 +8,7 @@
     list-style: none;
     padding: 0;
     display: flex;
-    justify-content: flex-start;
-    align-self: flex-start;
+    justify-content: center;
+    align-items: center;
+    column-gap: 24px;
 }
