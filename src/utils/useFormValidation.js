@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 
-export default function useFormValidation() {
-  const [values, setValues] = useState({});
+export default function useFormValidation(initialState = {profilename: '', job: ''}) {
+  const [values, setValues] = useState(initialState);
   const [errors, setError] = useState({});
   const [isInputValid, setIsInputValid] = useState({});
   const [isValid, setIsValid] = useState(false);
@@ -25,7 +25,7 @@ export default function useFormValidation() {
     });
     setIsValid(form.checkValidity());
   }
-  function reset(obj = {}) {
+  function reset(obj = initialState) {
     setValues(obj);
     setError({});
     setIsInputValid({});

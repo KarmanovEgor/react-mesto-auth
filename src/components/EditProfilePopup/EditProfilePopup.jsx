@@ -4,6 +4,7 @@ import PopupWithForm from "../PopapWithForm/PopupWithForm";
 import currentUserContext from "../../contexts/CurrentUserContext";
 
 export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
+  
   const currentUser = useContext(currentUserContext);
   const {
     values,
@@ -13,15 +14,18 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
     handleChange,
     reset,
     setInitialData,
-  } = useFormValidation();
-  useEffect(() => {
-    setInitialData("profilename", currentUser.name);
-    setInitialData("job", currentUser.about);
-  }, [currentUser, setInitialData]);
+  } = useFormValidation({profilename: '', job: '' }
 
+);
+
+  useEffect(() => {
+    setInitialData("profilename", currentUser.currentUser.name || '');
+    setInitialData("job", currentUser.currentUser.about || '');
+  }, [currentUser, setInitialData]);
+  // console.log(currentUser)
   function resetOfClose() {
     onClose();
-    reset({ profilename: currentUser.name, job: currentUser.about });
+    reset({ profilename: currentUser.currentUser.name, job: currentUser.currentUser.about});
   }
   // console.log(values)
   function handleSubmit(e) {
@@ -83,3 +87,5 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
     </PopupWithForm>
   );
 }
+  //  value={values.job ? values.job : ''}
+  //  value={values.profilename ? values.profilename : ''}
