@@ -28,7 +28,7 @@ export default function Main({
                 className="profile__img"
                 title="изображение профиля"
                 alt="изображение профиля"
-                src={currentUser.avatar ? currentUser.avatar : "#"}
+                src={currentUser.currentUser.avatar ? currentUser.currentUser.avatar : "#"}
               />
               <button
                 type="button"
@@ -38,7 +38,7 @@ export default function Main({
             </div>
             <div className="profile__info">
               <h1 className="profile__title">
-                {currentUser.name ? currentUser.name : ""}
+                {currentUser.currentUser.name ? currentUser.currentUser.name : ""}
               </h1>
               <button
                 type="button"
@@ -46,7 +46,7 @@ export default function Main({
                 onClick={oneEditProfile}
               />
               <p className="profile__subtitle">
-                {currentUser.about ? currentUser.about : ""}
+                {currentUser.currentUser.about ? currentUser.currentUser.about : ""}
               </p>
             </div>
             <button

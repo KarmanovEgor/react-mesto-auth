@@ -1,8 +1,5 @@
 // комментарии к работе : 1)реализовал дополнительные компоненты, а так же попробовал подключить отдельно стили в компоненте Burger(как я понял данный компонент не обязателен)
 // 2) Валидация так же была не обязательна в этой работе, поэтому я её немного не доделал (сроки поджимают, но в консоли ошибок нет)
-
-
-
 import Header from "./Header/Header";
 import Main from "./Main/Main";
 import Footer from "./Footer/Footer";
@@ -19,7 +16,7 @@ import InfoTooltip from "./InfoTooltip/InfoTooltip";
 import * as auth from "../utils/auth.js";
 import { Navigate, Routes, Route } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import {register, authorize, getContent} from "../utils/auth.js";
+import { register, authorize, getContent } from "../utils/auth.js";
 import ProtectedMain from "./ProtectedMain/ProtectedMain";
 
 function App() {
@@ -47,7 +44,7 @@ function App() {
     isInfoTooltipPopupOpen;
   const [loggedIn, setLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
-  const [isSuccessful, setIsSuccessful] = useState(false)
+  const [isSuccessful, setIsSuccessful] = useState(false);
   const closeAllPopups = useCallback(() => {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
@@ -63,25 +60,13 @@ function App() {
     setDelPopupOpen,
     setIsInfoTooltipPopupOpen,
   ]);
-  // useEffect(() => {
-  //   if (localStorage.jwt) {
-  //     console.log(localStorage)
-  //     getContent(localStorage.jwt)
-  //       .then(res => {
-  //         console.log(res)
-  //           setLoggedIn(true);
-  //           setUserEmail(res.data.email);
-  //           navigate("/")}) 
-  //           .catch(er=> console.error(`ошибка при авторизации ${er} err`))
-  //         } else {
-  //           setLoggedIn(false)}},
-  //         [navigate])
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       getContent(token)
         .then((res) => {
-          console.log(res)
+          console.log(res);
           if (res.data) {
             setLoggedIn(true);
             setUserEmail(res.data.email);
@@ -131,40 +116,47 @@ function App() {
     setDeleteCardId(cardid);
     setDelPopupOpen(true);
   }
-
-  // я бы сделал отдельным компонентом, это было бы правильнее?
   function handleCardLike(card) {
-   
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
-    
-   
-   
 
     if (!isLiked) {
-      api.addLike(card._id).then((newCard) => {
-        setCards((state) =>
-          state.map((c) => (c._id === card._id ? newCard : c))
-        );
-      });
+      api
+        .addLike(card._id)
+        .then((newCard) => {
+          setCards((state) =>
+            state.map((c) => (c._id === card._id ? newCard : c))
+          );
+        })
+        .catch((err) => {
+          console.log(`Ошибка при добавлении лайка: ${err}`);
+        });
     } else {
-      api.deleteLike(card._id).then((newCard) => {
-        setCards((state) =>
-          state.map((c) => (c._id === card._id ? newCard : c))
-        );
-      });
+      api
+        .deleteLike(card._id)
+        .then((newCard) => {
+          setCards((state) =>
+            state.map((c) => (c._id === card._id ? newCard : c))
+          );
+        })
+        .catch((err) => {
+          console.log(`Ошибка при удалении лайка: ${err}`);
+        });
     }
   }
 
   useEffect(() => {
     if (loggedIn) {
-    Promise.all([api.getInfo(), api.getCards()])
+      Promise.all([api.getInfo(), api.getCards()])
 
-      .then(([resInfo, resCards]) => {
-        setCurrentUser(resInfo);
-        setCards(resCards);
-      })
-      .catch((error) => console.error(`Ошибка ${error}`));
-  }}, [loggedIn]);
+        .then(([resInfo, resCards]) => {
+          setCurrentUser(resInfo);
+          setCards(resCards);
+        })
+        .catch((error) =>
+          console.error(`Ошибка при загрузке информации:${error}`)
+        );
+    }
+  }, [loggedIn]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -178,7 +170,9 @@ function App() {
         );
         closeAllPopups();
       })
-      .catch((error) => console.error(`Ошибка ${error}`));
+      .catch((error) =>
+        console.error(`Ошибка при удалении карточки: ${error}`)
+      );
   }
 
   function handleUpdateUser(dataUser, reset) {
@@ -189,7 +183,11 @@ function App() {
         closeAllPopups();
         reset();
       })
-      .catch((error) => console.error(`Ошибка ${error}`));
+      .catch((error) =>
+        console.error(
+          `Ошибка при обновлении информации о пользователе: ${error}`
+        )
+      );
   }
 
   function handleUpdateAvatar(dataUser, reset) {
@@ -200,7 +198,9 @@ function App() {
         closeAllPopups();
         reset();
       })
-      .catch((error) => console.error(`Ошибка ${error}`));
+      .catch((error) =>
+        console.error(`Ошибка при обновлении аватара пользователя: ${error}`)
+      );
   }
 
   function handleAddPlaceSubmit(dataCard, reset) {
@@ -211,37 +211,37 @@ function App() {
         closeAllPopups();
         reset();
       })
-      .catch((error) => console.error(`Ошибка ${error}`));
+      .catch((error) =>
+        console.error(`Ошибка  при добавлении карточки: ${error}`)
+      );
   }
 
   function handleRegister(password, email) {
     register(password, email)
       .then((response) => {
-        setIsInfoTooltipPopupOpen(true)
-         setIsSuccessful(true)
-          navigate("/signin")
-        })
+        setIsInfoTooltipPopupOpen(true);
+        setIsSuccessful(true);
+        navigate("/signin");
+      })
       .catch((error) => {
-        setIsInfoTooltipPopupOpen(true)
-        setIsSuccessful(false)
-        console.error(`Ошибка при регистрации ${error}`)
-      })  
+        setIsInfoTooltipPopupOpen(true);
+        setIsSuccessful(false);
+        console.error(`Ошибка при регистрации: ${error}`);
+      });
   }
-  function handleLogin (password, email) {
+  function handleLogin(password, email) {
     authorize(password, email)
-    .then((res) => {
-    
+      .then((res) => {
         setLoggedIn(true);
         localStorage.setItem("token", res.token);
         navigate("/");
       })
       .catch((error) => {
-        setIsInfoTooltipPopupOpen(true)
-        setIsSuccessful(false)
-        console.error(`Ошибка при авторизации ${error}`)
-      }) 
-    
-  };
+        setIsInfoTooltipPopupOpen(true);
+        setIsSuccessful(false);
+        console.error(`Ошибка при авторизации: ${error}`);
+      });
+  }
 
   return (
     <currentUserContext.Provider value={{ currentUser, userEmail, loggedIn }}>
@@ -251,7 +251,7 @@ function App() {
             path="/*"
             element={
               <ProtectedRoute
-                element = {ProtectedMain}
+                element={ProtectedMain}
                 oneEditProfile={handleEditProfileClick}
                 onEditAvatar={handleEditAvatarClick}
                 onAddPlace={handleAddPlaceClick}
@@ -285,7 +285,7 @@ function App() {
           />
           <Route path="/*" element={<Navigate to="/" replace />} />
         </Routes>
-  
+
         <Footer />
 
         <EditProfilePopup
@@ -324,13 +324,10 @@ function App() {
           name="result"
           isSuccessful={isSuccessful}
           isOpen={isInfoTooltipPopupOpen}
-          onClose={closeAllPopups} 
+          onClose={closeAllPopups}
         />
       </div>
     </currentUserContext.Provider>
   );
 }
 export default App;
-
-
-  

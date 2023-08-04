@@ -4,11 +4,10 @@ import currentUserContext from "../../contexts/CurrentUserContext";
 export default function Card({ card, onClickCard, onDelete, onCardLike }) {
 
   const currentUser = useContext(currentUserContext);
-  console.log(currentUser)
   const isLiked = card.likes.some((i) => i._id === currentUser.currentUser._id);
   return (
     <div className="element__card">
-      {currentUser._id === card.owner._id && (
+      {currentUser.currentUser._id === card.owner._id && (
         <button
           className="element__trash-btn"
           type="button"
