@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Burger from "../Burger/Burger";
 
 export default function Header({ name, dataUser }) {
-  console.log(dataUser);
+  
   function onLogout() {
     localStorage.removeItem("token");
   }

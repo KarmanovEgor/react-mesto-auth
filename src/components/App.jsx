@@ -66,7 +66,7 @@ function App() {
     if (token) {
       getContent(token)
         .then((res) => {
-          console.log(res);
+          
           if (res.data) {
             setLoggedIn(true);
             setUserEmail(res.data.email);
